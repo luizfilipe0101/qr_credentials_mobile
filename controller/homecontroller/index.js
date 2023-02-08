@@ -1,3 +1,6 @@
+import {ToastAndroid} from 'react-native'
+
+
 
 export async function Num_parts(host, port, Itens, presence){
    
@@ -14,6 +17,7 @@ export async function Num_parts(host, port, Itens, presence){
 
     } catch(err){
         console.log('Aqui: ',err)
+        ToastAndroid.show('Não foi possível se conectar com o servidor', ToastAndroid.LONG)
         return 1;
     }
 
@@ -31,7 +35,8 @@ export async function Get_all(host, port, total){
         total(json.length)
 
     } catch(err){
-        console.log('Aqui: ',err)
+        console.log('Aqui: ',err);
+        ToastAndroid.show('Não foi possível se conectar com o servidor', ToastAndroid.LONG)
         return 1;
     }
 }
