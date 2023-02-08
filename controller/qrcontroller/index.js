@@ -1,5 +1,7 @@
 import {Vibration, ToastAndroid} from 'react-native';
-import {Show} from '../../models/crud/'
+
+//cd = code
+//nv = navigation
 
 export async function change_txt(cd, scan_state, nv, host, port){
 

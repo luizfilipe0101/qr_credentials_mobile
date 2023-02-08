@@ -40,7 +40,7 @@ export function Show(setH, setP){
                 setP(result.rows._array[0]['port']);
                 console.log('Resultado: ', result.rows._array)
             }},
-        (txObj, err)=>console.log(err))
+        (txObj, err)=>console.log('Errado: ',err))
     });
 }
 

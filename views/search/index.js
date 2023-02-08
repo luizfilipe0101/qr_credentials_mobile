@@ -19,6 +19,7 @@ export default function Search({route, navigation}){
     const [btn, setBtn] = useState(true);
     const [btn_clr, setClr] = useState(true);
     const [btn_detales, setDetalhes] = useState(true);
+    const [btn_pag, setPag] = useState(false);
 
     const lst = [[setID, setName, setCPF, setEmal, setPagamento, setCheck],
                 [setBtn, setClr, setDetalhes]];
@@ -27,6 +28,7 @@ export default function Search({route, navigation}){
 
     useEffect(()=>{
             try{
+                //Dados vindos da tela de leitura QRcode
                 setID(route.params.parts['id'])
                 setName(route.params.parts['nome'])
                 setCPF(route.params.parts['cpf'])
@@ -39,6 +41,15 @@ export default function Search({route, navigation}){
                 setPort(route.params._port)
 
                 setBtn(false)
+
+                if(route.params.parts['pagamento'] !== 'Aprovado'){
+                    setBtn(true);
+                    setPag(false);
+                }else{
+                    setBtn(false);
+                    setPag(true);
+                }
+
             }catch(err){
                 console.log('Sem parametros')
             }
@@ -64,6 +75,85 @@ export default function Search({route, navigation}){
         clr_all(lst)
        
     }
+
+    function pagar(){
+        Alert.alert('Atenção', 'Deseja confirmar o pagamento do participante?',[
+            {
+            text: 'confirmar',
+            onPress:(()=>{setPagamento('Aprovado'), setBtn(false), setPag(true)})
+        },
+        {
+            text: 'cancelar',
+            onPress:(()=>{})
+        }])
+    }
+
+
+    function Render(){
+        try{
+            if(route.params.parts['pagamento'] === 'Aprovado'){
+                return(
+                    <View>
+
+                        <View style={styles.chk_btns}>
+                            <Button
+                                title='Confirmar'
+                                onPress={()=>{check()}}
+                                disabled = {btn}
+                            ></Button>
+
+                        </View>
+
+                    </View>
+                )
+            }else{
+                return(
+                    <View>
+
+                        <View style={styles.chk_btns}>
+                            <Button
+                                title='Confirmar'
+                                onPress={()=>{check()}}
+                                disabled = {btn}
+                            ></Button>
+
+                            <Button
+                                title='Pagamento'
+                                onPress={()=>{pagar()}}
+                                disabled = {btn_pag}
+                            ></Button>
+
+                        </View>
+
+                    </View>
+                )
+            }
+        }catch{
+            return(
+                <View style={styles.chk_btns}>
+                    <Button
+                        title='Confirmar'
+                        onPress={()=>{check()}}
+                        disabled = {btn}
+                    ></Button>
+
+                    <Button
+                        title='Detalhes'
+                        onPress={()=>{}}
+                        disabled = {btn_detales}
+                    ></Button>
+
+                    <Button
+                        title='Limpar'
+                        onPress={()=>{Limpar(lst)}}
+                        disabled = {btn_clr}
+                    ></Button>
+                </View>
+            )
+
+        }
+    }
+
 
     return(
         <ScrollView>
@@ -120,25 +210,8 @@ export default function Search({route, navigation}){
 
                 </View>
 
-                <View style={styles.chk_btns}>
-                    <Button
-                        title='Confirmar'
-                        onPress={()=>{check()}}
-                        disabled = {btn}
-                    ></Button>
+                <Render/>
 
-                    <Button
-                        title='Detalhes'
-                        onPress={()=>{}}
-                        disabled = {btn_detales}
-                    ></Button>
-
-                    <Button
-                        title='Limpar'
-                        onPress={()=>{Limpar(lst)}}
-                        disabled = {btn_clr}
-                    ></Button>
-                </View>
             </View>
         </ScrollView>
 
